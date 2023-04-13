@@ -7,7 +7,19 @@ LE PROGRAMME PEUT ETRE LENT SELON LA QUALITE DE VOTRE ORDINATEUR.
 SI VOUS ETES BLOQUE, ALLEZ DANS LE MENU 'PAUSE' ET APPUYEZ SUR LA TOUCHE 'K' POUR REINITIALISER VOTRE PARTIE.
 SI CELA NE FONCTIONNE PAS, FERMEZ LE PROGRAMME AVEC LA TOUCHE 'ESPACE' ET RELANCEZ LE JEU.
 
-*/
+(c) Améliorations récentes
+(i) Modifications du 09/04/2023
+- Modification de la structure 'Asteroid' : les images des astéroïdes ont été déplacées dans la structure 'World' pour qu'elles ne soient chargées qu'une seule fois.
+- Ajout d'une planète et d'un fond d'écran (Background) différent pour chaque stage.
+- Ajout de trois lasers de couleur différentes, choisi aléatoirement lorsque le laser est activé.
+- Ajout d'une UI (User Interface) supplémentaire : mini-histoire pour chaque stage.
+- Ajout du curseur.
+- Modification de l'Easter Egg pour problèmes de copyright.
+- Modification du mouvement du laser lors d'une partie perdue. Le laser s'immobilise. [Apparition du bug de la partie perdu moins fréquente (Cf. readme Article V, (b))]
+- Resolution du bug de score pour la dernière planete. Le score de la dernière planete n'était pas comptabilisé.
+- Correction de l'UI mini-histoire. Il n'y avait pas d'affichage lorsque le joueur choisissait de continuer le jeu après l'avoir fini.
+(ii) Modification du 10/04/2023
+- Ajout de 'w.collision' qui permet d'afficher les messages de la partie perdue meme quand l'asteroide est detruit [Plus d'appartition du bug de la partie perdu]
 
 /**< -------------------------------------------------- //
 
@@ -23,6 +35,9 @@ using namespace grapic;
 #include <cstdlib>
 
 #include <ostream>
+
+#include <Windows.h>
+#include "MMsystem.h"
 
 using namespace std;
 
@@ -68,9 +83,6 @@ struct Asteroid
     float rayon;
 
     float masse;
-
-    Image imAst = image("apps/Cherazade/Asteroides/Images/Asteroide.png");
-    Image imDeb = image("apps/Cherazade/Asteroides/Images/Debris.png");
 };
 
 struct World
@@ -80,42 +92,61 @@ struct World
     Particle soucoupe;
     Particle laser;
 
-    Image imSoucoupe = image("apps/Cherazade/Asteroides/Images/Soucoupe.png");
-    Image imReactor = image("apps/Cherazade/Asteroides/Images/Reacteur.png");
-    Image imCollide = image("apps/Cherazade/Asteroides/Images/Explosion.png");
-    Image imLaser = image("apps/Cherazade/Asteroides/Images/Laser.png");
+    Image imSoucoupe = image("apps/Cherazade/Asteroides/Data/Soucoupe.png");
+    Image imReactor = image("apps/Cherazade/Asteroides/Data/Reacteur.png");
+    Image imCollide = image("apps/Cherazade/Asteroides/Data/Explosion.png");
+
+    Image imLaser;
+
+    Image imLaserRed = image("apps/Cherazade/Asteroides/Data/laserRed.png");
+    Image imLaserOrange = image("apps/Cherazade/Asteroides/Data/laserOrange.png");
+    Image imLaserYellow = image("apps/Cherazade/Asteroides/Data/laserYellow.png");
+
+    int nbLaser;
 
     /**< LUNE */
 
     Asteroid lune;
-    Image imLune = image("apps/Cherazade/Asteroides/Images/Lune.png");
 
     /**< TABLEAU D'ASTEROIDES */
 
     int nbAsteroid;
     Asteroid tabAsteroid[MAX_ASTEROID];
+    Image imAst = image("apps/Cherazade/Asteroides/Data/Asteroide.png");
+    Image imDeb = image("apps/Cherazade/Asteroides/Data/Debris.png");
+
+    /**< STAGES */
+
+    int nbStage;
+
+    Image bg0 = image("apps/Cherazade/Asteroides/Data/Background3.png");
+    Image bg1 = image("apps/Cherazade/Asteroides/Data/Background1.png");
+    Image bg2 = image("apps/Cherazade/Asteroides/Data/Background4.png");
+
+    Image planet0 = image("apps/Cherazade/Asteroides/Data/Aquamarine.png");
+    Image planet1 = image("apps/Cherazade/Asteroides/Data/Cratered.png");
+    Image planet2 = image("apps/Cherazade/Asteroides/Data/Snowy.png");
 
     /**< JEU/AUTRE */
 
     int score;
+    int win;
+    int collision;
 
     Menu m;
 
-    Image bg = image("apps/Cherazade/Asteroides/Images/Espace.jpg");
-    Image imYouWin = image("apps/Cherazade/Asteroides/Images/YouWin.png");
-    Image imYouLose = image("apps/Cherazade/Asteroides/Images/YouLose.png");
-    Image menu = image("apps/Cherazade/Asteroides/Images/MenuSF.jpg");
-    Image imRobot = image("apps/Cherazade/Asteroides/Images/Robot.png");
-    Image imBorderSF = image("apps/Cherazade/Asteroides/Images/BorderSF.png");
+    Image imCursor = image("apps/Cherazade/Asteroides/Data/cursor_hand.png");
+    Image imYouWin = image("apps/Cherazade/Asteroides/Data/YouWin.png");
+    Image imYouLose = image("apps/Cherazade/Asteroides/Data/YouLose.png");
+    Image menu = image("apps/Cherazade/Asteroides/Data/MenuSF.jpg");
+    Image imRobot = image("apps/Cherazade/Asteroides/Data/robot-preview.png");
+    Image imBorderSF = image("apps/Cherazade/Asteroides/Data/BorderSF.png");
+    Image imStory = image("apps/Cherazade/Asteroides/Data/glassPanel.png");
 
     /**< EASTER EGG */
 
-    int inG;
-    int inKw;
-    int inKh;
-    Image imG = image("apps/Cherazade/Asteroides/Images/G.png");
-    Image imK = image("apps/Cherazade/Asteroides/Images/K.png");
-    Image imS = image("apps/Cherazade/Asteroides/Images/S.png");
+    Image imC = image("apps/Cherazade/Asteroides/Data/spaceCat.png");
+    Image iml = image("apps/Cherazade/Asteroides/Data/layachi.png");
 };
 
 /**< -------------------------------------------------- //
@@ -241,11 +272,27 @@ float randRayon() /**< LE RAYON DE L'ASTEROIDE EST COMPRIS ENTRE 10 ET 30 AFIN Q
 
 void initScore(World& w) /**< LE SCORE EST INITIALISE SEPAREMENT POUR QU'IL NE SOIT PAS REINITIALISE LORSQUE LE JOUEUR PASSE AU STAGE SUIVANT */
 {
+    w.nbStage = 0;
     w.score = 0;
+    w.win = 0;
 }
 
 void initLaser(World& w)
 {
+    w.nbLaser = rand()%2; /**< COULEUR DU LASER ALEATOIRE */
+
+    if(w.nbLaser == 0)
+    {
+        w.imLaser = w.imLaserRed;
+    }
+    if(w.nbLaser == 1)
+    {
+        w.imLaser = w.imLaserOrange;
+    }
+    else
+    {
+        w.imLaser = w.imLaserYellow;
+    }
 
     if(w.laser.masse > 0) /**< UNE MASSE POSITIVE SIGNIFIE QUE LE LASER A ETE ACTIVE */
     {
@@ -261,6 +308,7 @@ void initLaser(World& w)
 
 void initWorld(World& w, int nbAsteroid)
 {
+    w.collision = 0;
 
     /**< INIT SOUCOUPE */
 
@@ -291,13 +339,6 @@ void initWorld(World& w, int nbAsteroid)
 
         w.tabAsteroid[i].masse = w.tabAsteroid[i].rayon * pow(10, 13);
     }
-}
-
-void initEasterEgg(World& w)
-{
-    w.inG = 1;
-    w.inKw = 1;
-    w.inKh = 1;
 }
 
 /**< -------------------------------------------------- //
@@ -341,14 +382,7 @@ Vecteur forceReacteursSurSoucoupe(World w, float forceReacteur)
 
         Vecteur soucoupeVersMouse = mouse_pos - w.soucoupe.position ;
 
-        if(w.inG == 1)
-        {
-            image_draw(w.imReactor, w.soucoupe.position.x - 15, w.soucoupe.position.y - 75, 75, 75);
-        }
-        else
-        {
-            image_draw(w.imS, w.soucoupe.position.x - 35, w.soucoupe.position.y - 40, 70, 90);
-        }
+        image_draw(w.imReactor, w.soucoupe.position.x - 15, w.soucoupe.position.y - 75, 75, 75);
 
         return forceReacteur * normaliseVecteur(soucoupeVersMouse);
     }
@@ -369,7 +403,8 @@ Vecteur forceTotaleSoucoupe(World w)
 
 void vitessePositionSoucoupe(World& w)
 {
-    w.soucoupe.vitesse = w.soucoupe.vitesse + (forceTotaleSoucoupe(w) / w.soucoupe.masse) * dt ;
+    w.soucoupe.force = forceTotaleSoucoupe(w);
+    w.soucoupe.vitesse = w.soucoupe.vitesse + (w.soucoupe.force / w.soucoupe.masse) * dt ;
     w.soucoupe.position = w.soucoupe.position + w.soucoupe.vitesse * dt ;
 }
 
@@ -468,13 +503,32 @@ void winOrLose(World& w)
         {
             ajoutAsteroids = ajoutAsteroids + 10;
             initWorld(w, ajoutAsteroids);
+
             w.score = w.score + 10000;
+            w.nbStage++;
+
+            if(w.nbStage == 1)
+            {
+                w.bg0 = w.bg1;
+                w.planet0 = w.planet1;
+            }
+            if(w.nbStage == 2)
+            {
+                w.bg0 = w.bg2;
+                w.planet0 = w.planet2;
+            }
         }
 
         /**< FIN DU JEU */
 
         else
         {
+            if(w.win == 0) /**< CORRECTION DU BUG DE LA DERNIERE PLANETE */
+            {
+                w.score = w.score + 10000;
+                w.win++;
+            }
+
             w.soucoupe.masse = -1;
 
             color(255, 255, 255);
@@ -483,14 +537,22 @@ void winOrLose(World& w)
 
             if(isKeyPressed(SDLK_g))
             {
-                w.imSoucoupe = w.imG ;
-                w.imLaser = w.imK;
-
-                w.inG = 2;
-                w.inKw = 2;
-                w.inKh = 6;
+                w.imSoucoupe = w.imC ;
 
                 initWorld(w, 10);
+                w.nbStage = 0;
+
+                w.bg0 = image("apps/Cherazade/Asteroides/Data/Background3.png");
+                w.planet0 = image("apps/Cherazade/Asteroides/Data/Aquamarine.png");
+            }
+
+            if(isKeyPressed(SDLK_k))
+            {
+                initWorld(w, 10);
+                w.nbStage = 0;
+
+                w.bg0 = image("apps/Cherazade/Asteroides/Data/Background3.png");
+                w.planet0 = image("apps/Cherazade/Asteroides/Data/Aquamarine.png");
             }
         }
     }
@@ -505,20 +567,29 @@ void winOrLose(World& w)
 
         if(distanceAsteroidsSoucoupe[i] < w.tabAsteroid[i].rayon and w.tabAsteroid[i].masse > 0)
         {
+            w.collision = 1;
 
             w.soucoupe.masse = -1;
+            w.laser.masse = -1;
 
-            image_draw(w.imCollide, w.soucoupe.position.x - 15 , w.soucoupe.position.y - 15, 30, 30);
-
-            image_draw(w.imYouLose, DIMW/4, DIMW/4, DIMW/2, DIMW/2);
-
-            color(255, 255, 255);
-            print(DIMW/3 , DIMW/5, "Press the 'k' key to start a new game");
-
-            if(isKeyPressed(SDLK_k))
+            if(w.collision == 1) /**< CORRECTION DU BUG DE LA PARTIE PERDU */
             {
-                initWorld(w, 10);
-                initScore(w);
+                image_draw(w.imCollide, w.soucoupe.position.x - 15 , w.soucoupe.position.y - 15, 30, 30);
+
+                image_draw(w.imYouLose, DIMW/4, DIMW/4, DIMW/2, DIMW/2);
+
+                color(255, 255, 255);
+                print(DIMW/3 , DIMW/5, "Press the 'k' key to start a new game");
+
+                if(isKeyPressed(SDLK_k))
+                {
+                    initWorld(w, 10);
+                    initScore(w);
+
+                    w.bg0 = image("apps/Cherazade/Asteroides/Data/Background3.png");
+                    w.planet0 = image("apps/Cherazade/Asteroides/Data/Aquamarine.png");
+                }
+
             }
         }
     }
@@ -534,9 +605,9 @@ void drawWorld(World& w)
 {
     /**< AFFICHAGE DES ELEMENTS DU JEU + MENU */
 
-    image_draw(w.bg, 0, 0, DIMW, DIMW);
+    image_draw(w.bg0, 0, 0, DIMW, DIMW);
 
-    image_draw(w.imLune, w.lune.position.x - w.lune.rayon, w.lune.position.y - w.lune.rayon, 30, 30);
+    image_draw(w.planet0, w.lune.position.x - w.lune.rayon, w.lune.position.y - w.lune.rayon, 30, 30);
 
     menu_draw(w.m, 5,5, 100, 102);
 
@@ -546,21 +617,57 @@ void drawWorld(World& w)
         {
             /**< ASTEROID NON DETRUIT */
 
-            image_draw(w.tabAsteroid[i].imAst, w.tabAsteroid[i].position.x - w.tabAsteroid[i].rayon,
+            image_draw(w.imAst, w.tabAsteroid[i].position.x - w.tabAsteroid[i].rayon,
             w.tabAsteroid[i].position.y - w.tabAsteroid[i].rayon, w.tabAsteroid[i].rayon * 2, w.tabAsteroid[i].rayon * 2);
         }
         else
         {
             /**< ASTEROID DETRUIT */
 
-            image_draw(w.tabAsteroid[i].imDeb, w.tabAsteroid[i].position.x - w.tabAsteroid[i].rayon,
+            image_draw(w.imDeb, w.tabAsteroid[i].position.x - w.tabAsteroid[i].rayon,
             w.tabAsteroid[i].position.y - w.tabAsteroid[i].rayon, w.tabAsteroid[i].rayon * 2, w.tabAsteroid[i].rayon * 2);
         }
     }
 
-    image_draw(w.imLaser, w.laser.position.x - 5, w.laser.position.y + 10, 15 * w.inKw, 15 * w.inKh);
+    image_draw(w.imLaser, w.laser.position.x - 5, w.laser.position.y + 10, 15, 15);
 
-    image_draw(w.imSoucoupe, w.soucoupe.position.x - 15 , w.soucoupe.position.y - (15 * w.inG), 30, 30 * w.inG);
+    image_draw(w.imSoucoupe, w.soucoupe.position.x - 15, w.soucoupe.position.y - 15, 30, 30);
+
+    int x, y;
+    mousePos(x, y);
+
+    image_draw(w.imCursor, x - 15, y - 15, 30, 30);
+
+    /**< AFFICHAGE STORYLINE */
+
+    image_draw(w.imStory, 21 * DIMW/30, DIMW/40, 150, 150);
+
+    if(w.nbStage == 0)
+    {
+        image_draw(w.imRobot, 21 * DIMW/30 + 15, DIMW/40 + 100, 50, 50);
+        print(21 * DIMW/30 + 15, DIMW/40 + 85, "Reach planet Ywosn !");
+        print(21 * DIMW/30 + 15, DIMW/40 + 60, "That is their last known");
+        print(21 * DIMW/30 + 15, DIMW/40 + 45, "position !");
+    }
+    if(w.nbStage ==  1)
+    {
+        image_draw(w.imRobot, 21 * DIMW/30 + 15, DIMW/40 + 100, 50, 50);
+        print(21 * DIMW/30 + 15, DIMW/40 + 85, "Reach planet Ratec !");
+        print(21 * DIMW/30 + 15, DIMW/40 + 60, "They have fled with the");
+        print(21 * DIMW/30 + 15, DIMW/40 + 45, "hero there !");
+        print(21 * DIMW/30 + 15, DIMW/40 + 30, "There is more Asteroids");
+        print(21 * DIMW/30 + 15, DIMW/40 + 15, "in this area, be careful !");
+    }
+    if(w.nbStage == 2)
+    {
+        image_draw(w.imRobot, 21 * DIMW/30 + 15, DIMW/40 + 100, 50, 50);
+        print(21 * DIMW/30 + 15, DIMW/40 + 85, "Reach planet Imuaq !");
+        print(21 * DIMW/30 + 15, DIMW/40 + 60, "They have fled again !");
+        print(21 * DIMW/30 + 15, DIMW/40 + 45, "But their spaceship is");
+        print(21 * DIMW/30 + 15, DIMW/40 + 30, "malfunctioning.");
+        print(21 * DIMW/30 + 15, DIMW/40 + 15, "Now is your chance !");
+    }
+
 
     /**< AFFICHAGE DES INFORMATIONS RELATIVES AU JEU */
 
@@ -635,6 +742,9 @@ void menu(World& w)
     {
         initWorld(w, 10);
         initScore(w);
+
+        w.bg0 = image("apps/Cherazade/Asteroides/Data/Background3.png");
+        w.planet0 = image("apps/Cherazade/Asteroides/Data/Aquamarine.png");
     }
 
     /**< EXPLICATION DU JEU [ENG] */
@@ -656,27 +766,24 @@ void menu(World& w)
 
     color(255, 0, 0);
 
-    print(DIMW/20 + 18, 5*DIMW/8 - 200, " Inhabitants of the moon have attacked earth and have kidnapped its almighty hero !");
-    print(DIMW/20 + 50, 5*DIMW/8 - 225, " Reach the moon to save him and detroy the asteroids to protect earth !");
+    print(DIMW/20 + 65, 5*DIMW/8 - 200, " Aliens have attacked Earth and have kidnapped its almighty hero !");
+    print(DIMW/20 + 50, 5*DIMW/8 - 225, " Reach their planet to save him and destroy the asteroids to protect Earth !");
 
     /**< EASTER EGG */
 
     if(isKeyPressed(SDLK_g))
     {
-        w.imSoucoupe = w.imG ;
-        w.imLaser = w.imK;
-        w.inG = 2;
-        w.inKw = 2;
-        w.inKh = 6;
+        w.imSoucoupe = w.imC;
     }
 
     if(isKeyPressed(SDLK_s))
     {
-        w.imSoucoupe = image("apps/Cherazade/Asteroides/Images/Soucoupe.png") ;
-        w.imLaser = image("apps/Cherazade/Asteroides/Images/Laser.png");
-        w.inG = 1;
-        w.inKw = 1;
-        w.inKh = 1;
+        w.imSoucoupe = image("apps/Cherazade/Asteroides/Data/Soucoupe.png");
+    }
+
+    if(isKeyPressed(SDLK_l))
+    {
+        w.imSoucoupe = w.iml;
     }
 }
 
@@ -692,12 +799,12 @@ int main(int , char**)
 
 	winInit("Asteroides",DIMW,DIMW);
 
+	// bool played = PlaySound(TEXT("ObservingTheStar.wav"), NULL, SND_SYNC);
+
 	World w;
 
 	initWorld(w, 10);
 	initScore(w);
-
-	initEasterEgg(w);
 
     menu_add(w.m, "Pause");
     menu_add(w.m, "Resume");
@@ -728,4 +835,4 @@ int main(int , char**)
 	return 0;
 }
 
-/**< FIN DU PROGRAMME, MERCI D'AVOIR LU/JOUE */
+/**< FIN DU CODE, MERCI D'AVOIR LU/JOUE */
