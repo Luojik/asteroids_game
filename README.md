@@ -11,4 +11,4 @@ I used the Grapic library (https://github.com/ucacaxm/grapic) and SDL_mixer libr
 Thanks to Layachi and Mélinda for testing the game before the official release.
 
 Licence
-- CC-BY-NC
+- CC-BY
