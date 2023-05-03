@@ -2,30 +2,29 @@
 
 INFORMATIONS :
 
-LE PROGRAMME PEUT ETRE LENT SELON LA QUALITE DE VOTRE ORDINATEUR.
+LE PROGRAMME PEUT ETRE LENT SELON LA QUALITE DE VOTRE MACHINE.
 
 SI VOUS ETES BLOQUE, ALLEZ DANS LE MENU 'PAUSE' ET APPUYEZ SUR LA TOUCHE 'K' POUR REINITIALISER VOTRE PARTIE.
 SI CELA NE FONCTIONNE PAS, FERMEZ LE PROGRAMME AVEC LA TOUCHE 'ESPACE' ET RELANCEZ LE JEU.
 
-(c) Améliorations récentes
-(i) Modifications du 09/04/2023
+(a) Ameliorations récentes
+Modifications du 09/04/2023
 - Images, UI, mini-histoire.
-- Resolution du bug de score pour la dernière planete. (Cf. readme Article V, (b))
-
-(ii) Modification du 10/04/2023
-- Travail sur le bug de la partie perdue. (Cf. readme Article V, (b))
-
-(iii) Modification du 14/04/2023
+- Resolution du bug de score pour la dernière planete. (Cf. readme Article V, Section 5.01, (a))
+Modification du 10/04/2023
+- Travail sur le bug de la partie perdue. (Cf. readme Article V, Section 5.01, (b))
+Modification du 14/04/2023
 - Ajout du mode INFINITE.
-
-(iv) Modification du 15/04/2023
+Modification du 15/04/2023
 - Images, UI.
-
-(v) Modification du 16/04/2023
+Modification du 16/04/2023
 - Copyright des images.
-
-(vi) Modification du 22/04/2023
-- Ajout d'un musique de fond.
+Modification du 22/04/2023
+- Ajout d'une musique de fond.
+Modification du 28/04/2023
+- Réaparition des Asteroides.
+Modification du 03/05/2023
+- Mémoire du score maximal du joueur dans un fichier texte.
 
 /**< -------------------------------------------------- //
 
@@ -46,6 +45,8 @@ using namespace std;
 
 #include <SDL2/SDL_mixer.h>
 
+#include <fstream>
+
 /**< -------------------------------------------------- //
 
         CONSTANTES
@@ -55,7 +56,7 @@ using namespace std;
 const int MAX_ASTEROID = 50;
 
 const float EPS = 1E-07;
-const float G = 6.67408 * 1E-11; /**< constante de gravitation universelle */
+const float G = 6.67408 * 1E-11;
 const float dt = 0.01;
 
 const int DIMW = 550;
@@ -87,7 +88,7 @@ struct Asteroid
     float masse;
 
     Image imAst;
-    int nbAst; /**< choix aléatoire de l'image de l'astéroide */
+    int nbAst; /**< indice du choix aléatoire de l'image pour l'astéroide */
 
     /**< ROTATION DES OBJETS */
 
@@ -112,7 +113,7 @@ struct World
     Image imLaserOrange = image("data/asteroides/laserOrange.png");
     Image imLaserYellow = image("data/asteroides/laserYellow.png");
 
-    int nbLaser; /**< choix aléatoire de l'image du laser */
+    int nbLaser; /**< indice du choix aléatoire de l'image pour le laser */
 
     /**< PLANETE */
 
@@ -120,15 +121,15 @@ struct World
 
     /**< TABLEAU D'ASTEROIDES */
 
-    int nbAsteroid;
+    int nbAsteroid; /**< nombre d'astéroides réellement simulés */
     Asteroid tabAsteroid[MAX_ASTEROID];
 
     Image imDeb = image("data/asteroides/Debris.png");
 
     /**< STAGES */
 
-    int nbStage;
-    int nbMission; /**< indice de l'affichage des dialogues */
+    int nbStage; /**< indice qui définit l'affichage des différentes planètes et du fond d'écran */
+    int nbMission; /**< indice qui définit l'affichage des dialogues */
 
     Image bg0 = image("data/asteroides/Background3.png");
     Image bg1 = image("data/asteroides/Background1.png");
@@ -148,8 +149,8 @@ struct World
     Image imYouLose = image("data/asteroides/YouLose.png");
     Image imYouWin = image("data/asteroides/YouWin.png");
 
-    Image imPanel = image("data/asteroides/futureui1.png"); /**< score et level */
-    Image imPanel04 = image("data/asteroides/Panel04.png"); /**< dialogues */
+    Image imPanel = image("data/asteroides/futureui1.png"); /**< image du score et du niveau */
+    Image imPanel04 = image("data/asteroides/Panel04.png"); /**< image des dialogues */
 
     Image imCursor = image("data/asteroides/cursor_hand.png");
 
@@ -157,7 +158,7 @@ struct World
 
     /**< CORRECTION DE BUGS */
 
-    int lastPlanet; /**< correction du bug de la dernière planete */
+    int lastPlanet; /**< correction du bug de la dernière planète */
     int collision; /**< bug de la partie perdue */
 };
 
@@ -293,7 +294,7 @@ void initScore(World& w)
 
 void initImAst(World& w)
 {
-    /**< COULEUR ET VITESSE DE ROTATION POUR L'ASTEROIDE */
+    /**< IMAGE ET VITESSE DE ROTATION ALEATOIRE POUR L'ASTEROIDE */
 
     for(int i=0; i<w.nbAsteroid; i++)
     {
@@ -317,7 +318,7 @@ void initImAst(World& w)
 
 void initLaser(World& w)
 {
-    /**< COULEUR DU LASER */
+    /**< IMAGE ALEATOIRE POUR LE LASER */
 
     w.nbLaser = rand()%2;
 
@@ -649,9 +650,28 @@ void winOrLose(World& w)
 
 /**< -------------------------------------------------- //
 
-        PROCEDURE - DRAW ET UPDATE
+        PROCEDURE - DRAW ET UPDATE / FONCTION - FILE
 
 //   -------------------------------------------------- */
+
+int file(World& w) /**< RENVOIE LE SCORE MAXIMAL DU JOUEUR GARDE EN MEMOIRE DANS UN FICHIER TEXTE */
+{
+    int scoremax;
+
+    ifstream scoretxt2("AsteroidsScoreMax.txt");
+    scoretxt2 >> scoremax;
+
+    if(w.score > scoremax)
+    {
+        ofstream scoretxt;
+        scoretxt.open("AsteroidsScoreMax.txt");
+        scoretxt << w.score;
+        scoretxt.close();
+        scoremax = w.score;
+    }
+
+    return scoremax;
+}
 
 void drawWorld(World& w)
 {
@@ -746,6 +766,10 @@ void drawWorld(World& w)
     image_draw(w.imCursor, x - 15, y - 15, 30, 30);
 
     image_draw(w.imSoucoupe, w.soucoupe.position.x - 15, w.soucoupe.position.y - 15, 30, 30);
+
+    print(27*DIMW/30-115, 45*DIMW/50-15, "SCORE MAX : ");
+
+    print(27*DIMW/30-30, 45*DIMW/50-15, file(w));
 }
 
 void updateWorld(World& w)
@@ -774,8 +798,16 @@ void updateWorld(World& w)
 
         for(int i=0; i<w.nbAsteroid; i++)
         {
-            w.tabAsteroid[i].position = Rotate(w.tabAsteroid[i].position, w.tabAsteroid[i].position.x + 1,
-            w.tabAsteroid[i].position.y + 1, toRadian(2));
+            w.tabAsteroid[i].position = Rotate(w.tabAsteroid[i].position, w.tabAsteroid[i].position.x + 1, w.tabAsteroid[i].position.y + 1,
+                                               toRadian(w.tabAsteroid[i].vitesse * 0.5));
+
+            /**< ajout de 30px pour que visuellement l'astéroïde soit bien sorti de l'écran étant donné qu'il a un rayon maximal de 30px */
+
+            if(w.tabAsteroid[i].position.x > DIMW + 30 or w.tabAsteroid[i].position.y < 0 - 30)
+            {
+                w.tabAsteroid[i].position.x = randPositionX() - DIMW;
+                w.tabAsteroid[i].position.y = randPositionY() + DIMW/2;
+            }
         }
     }
 }
@@ -826,9 +858,13 @@ void menu(World& w)
 
 int main(int , char**)
 {
+    /**< MUSIQUE */
+
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
     Mix_Music *music = Mix_LoadMUS("AdrenalineToTheFight.wav");
     Mix_PlayMusic(music, -1);
+
+    /**< AFFICHAGE */
 
     bool stop = false;
 
