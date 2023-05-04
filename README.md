@@ -1,6 +1,6 @@
-# LIFAMI_projet
+# LIFAMI_project
 
-Projet de fin de semestre en LIFAMI.
+End of semester project in LIFAMI.
 
 ---
 
