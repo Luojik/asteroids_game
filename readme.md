@@ -1,5 +1,5 @@
-﻿NOM : EL KARROUMI
-Prénom : Cherazade
+NOM : LAN
+Prénom : Qiha
 
 LIFAMI - Mini-projet (Thème : Système de particules)
 
