@@ -1,4 +1,4 @@
-# asteroids_project
+# asteroids_game
 
 ---
 You can try the game here : 
