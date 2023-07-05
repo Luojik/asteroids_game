@@ -1,6 +1,3 @@
-﻿NOM : EL KARROUMI
-Prénom : Cherazade
-
 LIFAMI - Mini-projet (Thème : Système de particules)
 
 
