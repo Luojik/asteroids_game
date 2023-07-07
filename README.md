@@ -1,6 +1,5 @@
 # asteroids_game
 
----
 You can try the game here : 
 https://github.com/LanQiha/asteroids_project/releases/tag/v1.0.3
 
