@@ -6,14 +6,6 @@
 
 - [@lan_qiha](https://github.com/LanQiha)
 
-## Credits
-
-Thanks to Layachi and Mélinda for testing the game.
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
 ## Screenshots
 
 ![My Image](images_du_jeu/level_3.png)
