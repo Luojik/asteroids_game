@@ -2,7 +2,7 @@
 
 "asteroids_game" is my first C++ game project. The goal of this project was to use code in a specific field such as physics, biology or economy. The asteroids as well as the spaceship obey Newton's law of universal gravitation.
 
-## Authors
+## Auteur
 
 - [@lan_qiha](https://github.com/LanQiha)
 
@@ -205,4 +205,3 @@ Section 5.03 Licence
 
 Section 5.04 Remerciements
 - Merci à Layachi et à Mélinda pour avoir participé à la phase de tests.
-
