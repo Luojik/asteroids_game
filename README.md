@@ -116,7 +116,7 @@ Section 3.01 : Liens vers les documents scientifiques utilisés
 
 - https://fr.wikipedia.org/wiki/Syst%C3%A8me_solaire
 - https://fr.wikipedia.org/wiki/Ast%C3%A9ro%C3%AFde
-- 
+  
 (b) Informations sur la gravitation et mouvement des corps célestes :
 
 - https://fr.wikipedia.org/wiki/Loi_universelle_de_la_gravitation
