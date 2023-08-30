@@ -125,12 +125,12 @@ Section 3.01 : Liens vers les documents scientifiques utilisés
 - https://fr.wikipedia.org/wiki/M%C3%A9canique_quantique
 - https://fr.wikipedia.org/wiki/M%C3%A9soscopique
 - https://fr.wikipedia.org/wiki/Relation_de_Chasles
-- 
+
 (c) Informations sur les collisions (non utilisé dans ce programme) :
 
 - https://fr.wikipedia.org/wiki/Choc_%C3%A9lastique
 - https://fr.wikipedia.org/wiki/Lois_de_Snell-Descartes
-- 
+
 (d) Informations sur la propulsion spatiale :
 
 - https://fr.wikipedia.org/wiki/Propulsion_spatiale
