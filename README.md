@@ -111,24 +111,34 @@ Vous trouverez également des commentaires dans le code qui vont permettront de 
 Article III. Liens vers les documents scientifiques et les images/musiques utilisés dans ce programme
 
 Section 3.01 : Liens vers les documents scientifiques utilisés
+
 (a) Informations sur les corps célestes :
+
 - https://fr.wikipedia.org/wiki/Syst%C3%A8me_solaire
 - https://fr.wikipedia.org/wiki/Ast%C3%A9ro%C3%AFde
+- 
 (b) Informations sur la gravitation et mouvement des corps célestes :
+
 - https://fr.wikipedia.org/wiki/Loi_universelle_de_la_gravitation
 - https://fr.wikipedia.org/wiki/Lois_de_Kepler
 - https://fr.wikipedia.org/wiki/Champ_gravitationnel
 - https://fr.wikipedia.org/wiki/M%C3%A9canique_quantique
 - https://fr.wikipedia.org/wiki/M%C3%A9soscopique
 - https://fr.wikipedia.org/wiki/Relation_de_Chasles
+- 
 (c) Informations sur les collisions (non utilisé dans ce programme) :
+
 - https://fr.wikipedia.org/wiki/Choc_%C3%A9lastique
 - https://fr.wikipedia.org/wiki/Lois_de_Snell-Descartes
+- 
 (d) Informations sur la propulsion spatiale :
+
 - https://fr.wikipedia.org/wiki/Propulsion_spatiale
 
 Section 3.02 : Liens vers les créateurs/sites des images et des musiques utilisées
+
 (a) Images
+
 - 'Background1.png', 'Background3.png', 'Background4.png' : https://opengameart.org/users/rawdanitsu
 - 'Snowy.png', 'Cratered.png', 'Aquamarine.png' : https://opengameart.org/users/screaming-brain-studios
 - 'cursor_hand.png', 'Panel04', 'Reacteur.png' : https://opengameart.org/users/kenney
@@ -142,7 +152,9 @@ Section 3.02 : Liens vers les créateurs/sites des images et des musiques utilis
 - 'assroids.ico' : https://opengameart.org/users/mindchamber (icône de l'application sur la version .exe)
 - 'Soucoupe.png', 'Debris.png' ont été trouvées sur un site qui a pour but de partager des images non protégées : https://www.pngmart.com/fr/copyright-policy
 - 'Menu.png', 'YouWin.png', 'YouLose.png' : J'ai réalisé ces images grace aux autres images du dossier 'asteroides' et grace à l'application Canva.
+  
 (b) Musiques
+
 - AdrenalineToTheFight.wav : https://bocuma.itch.io
 
 
@@ -152,18 +164,27 @@ Section 3.02 : Liens vers les créateurs/sites des images et des musiques utilis
 Article IV. Historique des évolutions du code
 
 Section 4.01 : Début du travail sur le code : structures, surcharges d'opérateurs pour les vecteurs, fonctions de base d'utilisation des vecteurs, procédure d'initialisation, procédure d'affichage. 
+
 (a) Explications
+
 Dans les premiers jours du travail sur ce code, j'ai ajouté les librairies et les constantes. J'ai également écris les structures de base, les surcharges d'opérateurs pour les vecteurs et les fonctions de base d'utilisation des vecteurs. Je me suis concentrée sur la façon de procéder pour faire apparaître aléatoirement des astéroïdes sur l'écran. J'ai créé une procédure basique d'affichage afin de vérifier mon code. Elle affichait la planète et la soucoupe de façon immobile. Après avoir fini le TP "SystemeMasseRessort" J'ai pu rajouter les fonctions de normalisation d'un vecteur et de calcul de la distance. Pour finir, j'ai écris la procédure d'initialisation.
+
 (b) Qu'est-ce que le code affiche ?
+
 Un cercle en haut à gauche de l'écran qui représente la planète. Un cercle en bas au milieu de l'écran qui représente la soucoupe. Des cercles de tailles différentes qui apparaissent aléatoirement sur l'écran à chaque lancement de l'application.
 
 Section 4.02 : Stade intermédiaire du travail sur le code : modification des structures, de la procédure d'initialisation et de la procédure d'affichage. Fonctions/procédures : lois de la gravitation universelle, procédure laser.
+
 (a) Explications
+
 La partie suivante concerne principalement le codage des lois mécaniques et le fonctionnement du laser. J'ai commencé par ajouter une force d'attraction à chaque astéroïde. Ensuite, j'ai ajouté une vitesse pour les réacteurs de la soucoupe. J'ai remarqué que la soucoupe pouvait échapper à n'importe quelle force d'attraction. J'ai corrigé le problème en modifiant la procédure des réacteurs et en la remplaçant par une fonction ajoutant une force. Les lois physiques du jeu fonctionnent. J'ai ensuite travaillé sur le fonctionnement du laser. Dans ses débuts, le laser pouvait être lancé sans "cooldown". C'est un problème récurrent dans les jeux que l'on retrouve notamment dans les "platformer" ou le nombre de sauts doit être limité. J'ai modifié cette procédure afin que le laser fonctionne correctement puis j'ai modifié la procédure d'initialisation et d'affichage afin d'y incorporer ces modifications. Pour finir, j'ai ajouté un mouvement aux astéroïdes grâce à la fonction 'rotation'. Entre temps, j'ai également ajouté une image à chaque objet (Cf. dossier 'asteroides').
+
 (b) Qu'est-ce que le code affiche ?
+
 Des astéroïdes avec une position initiale aléatoire, en mouvement, exerçant une force d'attraction sur la soucoupe. Une soucoupe qui peut se mouvoir et lancer des lasers. Un fond d'écran et une image pour chaque objet. À ce stade, le 'game-over' n'est pas pris en compte et la soucoupe peux quitter l'écran.
 
 Section 4.03 : Fin du travail sur le code : modification des structures, de la procédure d'initialisation, de la procédure d'affichage. Procédure partie gagné ou partie perdu, procédure 'update' et ajout du menu, harmonisation et fonctionnalités bonus.
+
 Mon projet s'est terminé par l'écriture de la procédure partie gagnée et partie perdue, 'update' et l'ajout d'un menu. Ensuite, j'ai consacré plus de 50% du temps à optimiser le projet. J'ai testé le jeu et fais tester le jeu. J'ai corrigé les bugs remarqués grâce à la phase de tests et j'ai modifié le code afin d'y incorporer les améliorations nécessaires. Pour finir, j'ai passé un long moment à comprendre le fonctionnement de la musique avec C++. J'ai tout d'abord essayé de jouer de la musique avec la bibliothèque 'Windows.h'. Cependant, je me suis rendu compte que la musique et le jeu ne fonctionnaient pas en même temps. J'ai ensuite essayé de jouer de la musique avec SDL2 mais les résultats n'étaient pas concluant. La fenêtre d'affichage et la musique buggait. J'ai ensuite téléchargé SDL_mixer. J'ai dû faire face à deux problèmes : les versions de mes bibliothèques SDL2 et SDL_mixer et la position des fichiers de SDL_mixer. Après avoir correctement configuré ces éléments, j'ai pu jouer une musique de fond.
 
 
@@ -179,6 +200,7 @@ Section 5.01 Phases de tests
 La phase de test a permis de prendre connaissance des problèmes du jeu et de les corriger au mieux.
 
 (a) Problèmes résolus
+
 - Sortie de l'écran : dans les précédentes versions du jeu, la sortie de l'écran équivalait à une partie perdue. Étant donné que les forces en présence sur la soucoupe sont massives, la soucoupe a tendance à "glisser". Cette difficulté supplémentaire a été retirée.
 - Collision avec les limites de l'écran : les collisions ont été modifiées afin d'empêcher la soucoupe de rebondir violemment et de s'écraser involontairement sur un astéroïde. Cela a permis d'améliorer la maniabilité.
 - Tailles des astéroïdes : les astéroïdes pouvaient initialement prendre une taille entre 0 et 30 pixels. Ainsi, certains astéroïdes n'étaient pas visibles aux yeux du joueur. Cette valeur se situe à présent entre 10 et 30.
@@ -190,6 +212,7 @@ La phase de test a permis de prendre connaissance des problèmes du jeu et de le
 - Problème d'affichage des images.
 
 (b) Problèmes non résolus
+
 - Partie perdue : dans certaines situations où la soucoupe s'écrase sur un astéroïde au même moment ou le laser détruit ce même astéroïde, les messages informant que la partie est perdue ne s'affichent pas. La réinitialisation d'une partie ne marche pas dans 'Resume'. Il faut retourner dans le menu 'Pause' et recommencer une partie à partir de là. Ce bug est très rare.
 - Lorsque la soucoupe se trouve sur les limites du monde elle est très peu soumise aux forces gravitationnelles. Cependant, il n'est pas recommandé de se coller au mur étant donné que depuis le 28/04/2023, la réapparition des astéroïdes a été ajouté. Ces astéroïdes apparaissent dans la zone supérieur gauche de l'écran et traversent l'écran pour arrivé à la zone inférieur droite. Il y a un risque de collision avec ceux-ci dans les cas ou le joueur reste trop longtemps sur les limites de l'écran.
 
@@ -218,11 +241,14 @@ Modification du 03/05/2023
 - Mémoire du score maximal dans un fichier texte.
 
 (b) Ameliorations possibles
+
 - Ajout d'effets sonores simultanés : activation du laser de la soucoupe, collision avec un astéroïde, partie gagnée, partie perdue, activation des réacteurs de la soucoupe, menu.
 - Avoir un affichage plein écran en fonction des dimensions de l'écran de l'ordinateur du joueur.
 
 Section 5.03 Licence
+
 - MIT
 
 Section 5.04 Remerciements
+
 - Merci à Layachi et à Mélinda pour avoir participé à la phase de tests.
