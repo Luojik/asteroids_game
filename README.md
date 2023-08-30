@@ -15,26 +15,39 @@
 Sommaire : 
 
 Article I. Objectif de l'application et indications sur son utilisation
+
   Section 1.01 : But de l'application
+  
   Section 1.02 : Installation du projet
+  
   Section 1.03 : Touches
+  
   Section 1.04 : Fonctionnement du jeu
 
 Article II. Fonctionnement du code
 
 Article III. Liens vers les documents scientifiques et les images/musiques utilisés dans ce programme
+
   Section 3.01 : Liens vers les documents scientifiques utilisés
+  
   Section 3.02 : Liens vers les créateurs/sites des images et des musiques utilisées
 
 Article IV. Historique des évolutions du code
+
   Section 4.01 : Début du travail sur le code : structures, surcharges d'opérateurs pour les vecteurs, fonctions de base d'utilisation des vecteurs, procédure d'initialisation, procédure d'affichage. 
+  
   Section 4.02 : Stade intermédiaire du travail sur le code : modification des structures, de la procédure d'initialisation et de la procédure d'affichage. Fonctions/procédures : lois de la gravitation universelle, procédure laser.
+  
   Section 4.03 : Fin du travail sur le code : modification des structures, de la procédure d'initialisation, de la procédure d'affichage. Procédure partie gagné ou partie perdu, procédure 'update' et ajout du menu, harmonisation et fonctionnalités bonus.
 
 Article V. Informations supplémentaires
+
   Section 5.01 Phases de tests
+  
   Section 5.02 Améliorations
+  
   Section 5.03 Licence
+  
   Section 5.04 Remerciements
 
 
@@ -44,19 +57,27 @@ Article V. Informations supplémentaires
 Article I. Objectif de l'application et indications sur son utilisation
 
 Section 1.01 : But de l'application
+
 L'application est un mini jeu vidéo de type "Space Shooter" avec ajout de particularités physiques, notamment la loi de la gravitation universelle. L'échelle mésoscopique s'étend des dimensions de l'atome jusqu'au micromètre. C'est une échelle intermédiaire entre la physique quantique et la physique classique. Les objets en présence dans ce programme dépassent l'échelle mésoscopique. Ils sont de l'ordre du mètre. Par conséquent, la physique newtonienne est un modèle fiable pour ce projet.
 
 Section 1.02 : Installation du projet
+
 Vous aurez besoin de télécharger la bibliothèque grapic (Cf. https://github.com/ucacaxm/grapic) ainsi que la bibliothèque SDL_mixer (Cf. https://github.com/libsdl-org/SDL_mixer). Il faudra placer les fichiers de SDL_mixier dans les dossiers grapic correspondant puis il faudra ajouter le linker : -lSDL2_mixer à votre projet. Vous aurez besoin du dossier images 'asteroides' et du fichier 'Asteroides.cpp' ci-joint afin de lancer correctement l'application. Le dossier 'asteroides' doit se trouver dans le dossier 'data' de grapic. Vous trouverez également le dossier 'asteroides2'. Ce dossier est à inclure directement dans le projet, c'est à dire dans le dossier 'windows-cb20' de grapic.
 
 Section 1.03 : Touches
+
 (a) Touches du menu
-Lorsque vous démarrez l'application, vous vous trouvez dans le menu 'Pause'. Vous trouverez le menu en bas à gauche de l'écran. Le menu possède deux choix, 'Pause' et 'Resume'. Ce menu reste affiché tant que l'application est ouverte. Le bouton 'Pause' vous permet de revenir à la page sur laquelle vous vous trouviez lorsque vous avez lancé l'application. 'Resume' vous permet de revenir au jeu. Vous trouverez également sur la page du menu 'Pause' les règles écrites en anglais ainsi que la mini histoire du jeu. Si vous souhaitez quitter l'application, appuyez sur la touche 'espace'. Pour réinitialiser une partie, appuyez sur la touche 'k' lorsque vous avez perdu, gagné ou bien lorsque vous êtes dans le menu 'Pause'.  
+
+Lorsque vous démarrez l'application, vous vous trouvez dans le menu 'Pause'. Vous trouverez le menu en bas à gauche de l'écran. Le menu possède deux choix, 'Pause' et 'Resume'. Ce menu reste affiché tant que l'application est ouverte. Le bouton 'Pause' vous permet de revenir à la page sur laquelle vous vous trouviez lorsque vous avez lancé l'application. 'Resume' vous permet de revenir au jeu. Vous trouverez également sur la page du menu 'Pause' les règles écrites en anglais ainsi que la mini histoire du jeu. Si vous souhaitez quitter l'application, appuyez sur la touche 'espace'. Pour réinitialiser une partie, appuyez sur la touche 'k' lorsque vous avez perdu, gagné ou bien lorsque vous êtes dans le menu 'Pause'.
+
 IMPORTANT : Si vous êtes coincé à un moment ou à un autre dans l'application, vous pouvez toujours vous rendre dans le menu 'PAUSE' et appuyer sur la touche 'k' pour réinitialiser votre partie. Si cela ne fonctionne pas, fermez l'application avec la touche 'espace' et relancez le jeu.
+
 (b) Touches du jeu
+
 Pour déplacer votre soucoupe, vous devez orienter votre souris à l'endroit où vous voulez aller et faire un clic gauche à cet endroit-là. Cependant, gardez en tête que les réacteurs de votre soucoupe fonctionnent avec des forces. Une force appliquée dans une direction devra être compensée par une autre force dans la direction opposée pour rester immobile dans le référentiel de l'écran. Vous pouvez également vous défendre en lançant un laser avec la touche 'z'. Vous ne pouvez pas lancer un laser lorsqu'il y en a déjà un existant sur l'écran.
 
 Section 1.04 : Fonctionnement du jeu
+
 Vous perdez la partie si vous vous écrasez sur un astéroïde. Gardez en mémoire que votre soucoupe ne peut pas sortir de l'écran. Vous gagnez la partie lorsque vous atteignez la dernière planète. Il y a trois stages différents et donc trois planètes différentes à atteindre. Vous pouvez cependant recommencer chaque niveau à l'infini après avoir fini le jeu sans perdre votre score. Votre score dépend de deux paramètres : les planètes sur lesquelles vous avez déjà atterri et le nombre d'astéroïdes détruits. Le score lié à l'astéroïde dépend de sa taille. Plus l'astéroïde est grand, plus sa force gravitationnelle est grande, ce qui entraîne un risque plus élevé. La récompense est proportionnelle au risque. Le score lié aux planètes est fixe.
 
 
