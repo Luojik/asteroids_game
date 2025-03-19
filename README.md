@@ -4,7 +4,7 @@
 
 ## Author
 
-- [@lan_qiha](https://github.com/LanQiha)
+- [@Luojik](https://github.com/Luojik)
 
 ## Screenshots
 
